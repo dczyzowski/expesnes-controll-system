@@ -1,6 +1,12 @@
 export interface Expense {
   user: string;
-  amount: number;
   vendor: string;
+  category: string;
   date: Date;
+  amount: number;
+  item?: {
+    name: string;
+    market: string;
+    amount: number;
+  }[];
 }

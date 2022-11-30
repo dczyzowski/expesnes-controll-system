@@ -1,22 +1,23 @@
 import "./ExpenseItem.scss";
+import { Expense } from "./Interfaces";
 
-const ExpenseItem = (...props: any) => {
+const ExpenseItem = (props: { expense: Expense }) => {
   return (
-    <div className="expense-item">
-      <div className="expense-item__avatar">D</div>
+    <li className="expense-item">
+      <div className="expense-item__avatar">{props.expense.user.charAt(0)}</div>
       <div className="expense-item__information">
-        <p>Damian</p>
+        <p> {props.expense.user}</p>
         <div className="expense-item__description">
-          <p>Klamki do wzornika</p>
+          <p> {props.expense.category}</p>
         </div>
         <div className="expense-item__date">
-          <p>20-11-2022</p>
+          <p>{props.expense.date.toLocaleDateString()}</p>
         </div>
       </div>
       <div className="expense-item__money">
-        <p>1000 zł</p>
+        <p> {props.expense.amount}</p>
       </div>
-    </div>
+    </li>
   );
 };
 
