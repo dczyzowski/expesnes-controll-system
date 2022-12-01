@@ -27,7 +27,7 @@ export const dummyExpenseList: Expense[] = [
     category: "Prints",
     date: new Date(2022, 11, 12),
     amount: 40,
-    item: [
+    items: [
       {
         name: "Wizytówki",
         market: "Eng",

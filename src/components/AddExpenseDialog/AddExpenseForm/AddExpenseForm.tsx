@@ -10,18 +10,19 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Selector from "../Selector/Selector";
 
-import { Expense } from "../../Interfaces";
+import { Expense, Item } from "../../Interfaces";
+import ItemsComponent from "./ItemsComponent";
 
 const AddExpenseForm = (props: {
   tempExpense: Expense;
   onChange(value: Expense): void;
 }) => {
-  const [currentItem, setCurrentItem] = useState<string>("");
-
   //TODO get user from global
   const getUser = () => {
     return "Damian";
   };
+
+  const [items, setItems] = useState<Item[]>([{ position: "", amount: 0 }]);
 
   const handleChange =
     (prop: keyof Expense) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,55 +37,50 @@ const AddExpenseForm = (props: {
     });
   };
 
-  const items = [""];
+  const addNewPositionHandler = () => {
+    setItems((prevItems) => {
+      const newArray = [...prevItems, { position: "", amount: 0 }];
+      return newArray;
+    });
+    console.log(items);
+  };
 
   return (
-    <DialogContent>
-      <TextField
-        id="outlined-read-only-input"
-        label="User"
-        defaultValue={getUser()}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Date of invoice"
-          value={props.tempExpense.date}
-          onChange={setDate}
-          renderInput={(params) => <TextField {...params} />}
+    <div>
+      <DialogContent>
+        <TextField
+          id="outlined-read-only-input"
+          label="User"
+          defaultValue={getUser()}
+          InputProps={{
+            readOnly: true,
+          }}
         />
-      </LocalizationProvider>
-
-      <Selector
-        vendor={props.tempExpense.vendor}
-        onChange={handleChange("vendor")}
-      />
-
-      {items.map((item) => (
-        <div key={item} className="position">
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="AddExpense"
-            value={currentItem}
-            onChange={(field) => setCurrentItem(field.target.value)}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Date of invoice"
+            value={props.tempExpense.date}
+            onChange={setDate}
+            renderInput={(params) => <TextField {...params} />}
           />
-          <TextField
-            id="standard-adornment-amount"
-            value={props.tempExpense.amount}
-            onChange={handleChange("amount")}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-          />
-        </div>
-      ))}
-    </DialogContent>
+        </LocalizationProvider>
+        <Selector
+          vendor={props.tempExpense.vendor}
+          onChange={handleChange("vendor")}
+        />
+        {items.map((item, index) => {
+          return (
+            <ItemsComponent
+              item={item}
+              onChange={(item: Item) => {
+                return (items[index] = item);
+              }}
+            />
+          );
+        })}
+        <button onClick={addNewPositionHandler}>DODAJ +</button>
+      </DialogContent>
+    </div>
   );
 };
 
