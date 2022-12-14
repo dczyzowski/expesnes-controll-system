@@ -4,14 +4,10 @@ export interface Expense {
   category: string;
   date: Date;
   amount: number;
-  items?: {
-    name: string;
-    market: string;
-    amount: number;
-  }[];
+  items?: InvoiceItem[];
 }
 
-export type Item = {
+export type InvoiceItem = {
   position: string;
   amount: number;
 };

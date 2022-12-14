@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./ExpenseList.scss";
 import { Expense } from "./Interfaces";
 
-type Props = {
-  children?: React.ReactNode;
-};
-
-const ExpesneList = () => {
+const ExpenseList = () => {
   const [expenseList, setExpenseList] = useState<Expense[]>([]);
 
   const fetchList = async () => {
@@ -27,7 +23,7 @@ const ExpesneList = () => {
       .then((list) => {
         const finList: Expense[] = [];
         list.map((item: Expense) =>
-          finList.push({ ...item, ["date"]: new Date(item.date) })
+          finList.push({ ...item, date: new Date(item.date) })
         );
         setExpenseList(finList);
         console.log(finList);
@@ -41,11 +37,11 @@ const ExpesneList = () => {
 
   return (
     <ul className="expenses-list">
-      {expenseList.map((element) => (
-        <ExpenseItem expense={element} />
+      {expenseList.map((element, index) => (
+        <ExpenseItem key={index} expense={element} />
       ))}
     </ul>
   );
 };
 
-export default ExpesneList;
+export default ExpenseList;

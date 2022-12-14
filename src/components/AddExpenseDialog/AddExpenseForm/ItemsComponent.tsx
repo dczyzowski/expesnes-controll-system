@@ -1,22 +1,27 @@
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 
-import { Item } from "../../Interfaces";
+import { InvoiceItem } from "../../Interfaces";
 
-const ItemsComponent = (props: { item: Item; onChange(item: Item): void }) => {
-  const [item, setItems] = useState<Item>(props.item);
+const ItemsComponent = (props: {
+  index: number;
+  item: InvoiceItem;
+  onChange(item: InvoiceItem, index: number): void;
+}) => {
+  const [item, setItems] = useState<InvoiceItem>(props.item);
 
   const setItemHandler =
-    (prop: keyof Item) => (field: React.ChangeEvent<HTMLInputElement>) => {
+    (prop: keyof InvoiceItem) =>
+    (field: React.ChangeEvent<HTMLInputElement>) => {
       setItems((prevState) => {
         const newValue = { ...prevState, [prop]: field.target.value };
-        props.onChange(newValue);
+        props.onChange(newValue, props.index);
         return newValue;
       });
     };
 
   return (
-    <div key={item.position} className="position">
+    <div className="position">
       <TextField
         autoFocus
         margin="dense"

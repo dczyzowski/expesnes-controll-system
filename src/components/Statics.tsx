@@ -1,4 +1,9 @@
 import { Expense } from "./Interfaces";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 export const vendorsArray = [
   "Profit Media - Sławomir Trzósło",
@@ -6,38 +11,27 @@ export const vendorsArray = [
   "Coś innego",
 ];
 
-export const dummyExpenseList: Expense[] = [
-  {
-    user: "Damian",
-    vendor: "Profit media",
-    category: "Prints",
-    date: new Date(2022, 11, 17),
-    amount: 200,
-  },
-  {
-    user: "Damian",
-    vendor: "Chroma",
-    category: "Cataloques",
-    date: new Date(2022, 11, 10),
-    amount: 200,
-  },
-  {
-    user: "Damian",
-    vendor: "Profit media",
-    category: "Prints",
-    date: new Date(2022, 11, 12),
-    amount: 40,
-    items: [
-      {
-        name: "Wizytówki",
-        market: "Eng",
-        amount: 10,
-      },
-      {
-        name: "Katalogi FR",
-        market: "PL",
-        amount: 30,
-      },
-    ],
-  },
-];
+export const defaultExpense: Expense = {
+  user: "Ja",
+  vendor: "Nie ja",
+  category: "hmm",
+  date: new Date(),
+  amount: 0,
+  items: [],
+};
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBFRZuI1gC_atYE7cAUCinMPEi7vR5qu4k",
+  authDomain: "expense-controll-system.firebaseapp.com",
+  projectId: "expense-controll-system",
+  storageBucket: "expense-controll-system.appspot.com",
+  messagingSenderId: "408141462965",
+  appId: "1:408141462965:web:056866b91c5d9abc1dadfc",
+  measurementId: "G-TRBEDNJ837",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);

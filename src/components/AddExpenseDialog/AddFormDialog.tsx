@@ -11,11 +11,11 @@ import LoadingSpinner from "../LoadingSpinner";
 import AddExpenseForm from "./AddExpenseForm/AddExpenseForm";
 
 import { Expense } from "../Interfaces";
-import { dummyExpenseList } from "../Statics";
+import { defaultExpense } from "../Statics";
 
 export default function AddFormDialog(props: {}) {
   const [open, setOpen] = useState(false);
-  const [tempExpense, setTempExpense] = useState(dummyExpenseList[0]);
+  const [expense, setExpense] = useState(defaultExpense);
   const [loading, setLoading] = useState<boolean>(false);
 
   const pushData = async (body: Expense) => {
@@ -29,7 +29,7 @@ export default function AddFormDialog(props: {}) {
       },
       body: JSON.stringify({
         ...body,
-        ["date"]: body.date.toISOString().split("T")[0],
+        date: body.date.toISOString().split("T")[0],
       }),
     })
       .then((response) => response.json())
@@ -42,7 +42,7 @@ export default function AddFormDialog(props: {}) {
     setTimeout(() => {
       setOpen(false);
       setLoading(false);
-      pushData(tempExpense);
+      pushData(expense);
     }, 1000);
   };
 
@@ -67,7 +67,7 @@ export default function AddFormDialog(props: {}) {
       </Fab>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add New Expense</DialogTitle>
-        <AddExpenseForm tempExpense={tempExpense} onChange={setTempExpense} />
+        <AddExpenseForm expense={expense} onChange={setExpense} />
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSave}>Save</Button>

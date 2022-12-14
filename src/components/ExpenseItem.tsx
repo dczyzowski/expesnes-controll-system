@@ -1,7 +1,21 @@
 import "./ExpenseItem.scss";
-import { Expense } from "./Interfaces";
+import { Expense, InvoiceItem } from "./Interfaces";
 
 const ExpenseItem = (props: { expense: Expense }) => {
+  const sumAmount = () => {
+    let sum = 0;
+    if (
+      props.expense.items &&
+      props.expense.items.length !== 0 &&
+      props.expense.items !== undefined
+    )
+      props.expense.items.map(
+        (item: InvoiceItem) => (sum += Number(item.amount))
+      );
+    else sum = props.expense.amount;
+
+    return sum;
+  };
   return (
     <li className="expense-item">
       <div className="expense-item__avatar">{props.expense.user.charAt(0)}</div>
@@ -15,7 +29,7 @@ const ExpenseItem = (props: { expense: Expense }) => {
         </div>
       </div>
       <div className="expense-item__money">
-        <p> {props.expense.amount}</p>
+        <p> {sumAmount()}</p>
       </div>
     </li>
   );

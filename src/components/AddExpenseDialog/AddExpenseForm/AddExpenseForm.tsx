@@ -4,17 +4,16 @@ import TextField from "@mui/material/TextField";
 import DialogContent from "@mui/material/DialogContent";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import InputAdornment from "@mui/material/InputAdornment";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Selector from "../Selector/Selector";
 
-import { Expense, Item } from "../../Interfaces";
+import { Expense, InvoiceItem } from "../../Interfaces";
 import ItemsComponent from "./ItemsComponent";
 
 const AddExpenseForm = (props: {
-  tempExpense: Expense;
+  expense: Expense;
   onChange(value: Expense): void;
 }) => {
   //TODO get user from global
@@ -22,18 +21,20 @@ const AddExpenseForm = (props: {
     return "Damian";
   };
 
-  const [items, setItems] = useState<Item[]>([{ position: "", amount: 0 }]);
+  const [items, setItems] = useState<InvoiceItem[]>([
+    { position: "", amount: 0 },
+  ]);
 
   const handleChange =
     (prop: keyof Expense) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      props.onChange({ ...props.tempExpense, [prop]: event.target.value });
+      props.onChange({ ...props.expense, [prop]: event.target.value });
     };
 
   //TODO WHY DATE UPDATING?
   const setDate = (date: Date | null) => {
     props.onChange({
-      ...props.tempExpense,
-      ["date"]: date ? date : new Date(),
+      ...props.expense,
+      date: date ? date : new Date(),
     });
   };
 
@@ -43,6 +44,12 @@ const AddExpenseForm = (props: {
       return newArray;
     });
     console.log(items);
+  };
+
+  const changeItem = (item: InvoiceItem, index: number) => {
+    const newItems: InvoiceItem[] = [...props.expense.items!];
+    newItems[index] = item;
+    props.onChange({ ...props.expense, items: newItems });
   };
 
   return (
@@ -59,22 +66,22 @@ const AddExpenseForm = (props: {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Date of invoice"
-            value={props.tempExpense.date}
+            value={props.expense.date}
             onChange={setDate}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
         <Selector
-          vendor={props.tempExpense.vendor}
+          vendor={props.expense.vendor}
           onChange={handleChange("vendor")}
         />
         {items.map((item, index) => {
           return (
             <ItemsComponent
+              key={index}
+              index={index}
               item={item}
-              onChange={(item: Item) => {
-                return (items[index] = item);
-              }}
+              onChange={changeItem}
             />
           );
         })}
